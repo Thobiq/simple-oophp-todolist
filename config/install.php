@@ -7,8 +7,6 @@ try {
     $conn = new PDO($dsn, DB_USER, DB_PASS);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // $conn->exec("USE ".DB_NAME)
-
     // create user table
     $sql = "CREATE TABLE IF NOT EXISTS t_users (
         id_user INT AUTO_INCREMENT PRIMARY KEY,
@@ -33,6 +31,7 @@ try {
     $conn->exec($sql);
     echo "tabel status todolist berhasil dibuat <br>";
 
+    // create list table
     $sql = "CREATE TABLE t_list (
         id_list INT AUTO_INCREMENT PRIMARY KEY,
         list TEXT NOT NULL,
@@ -44,7 +43,7 @@ try {
 
     $conn->exec($sql);
     echo "tabel todolist berhasil dibuat <br>";
-    
+
     echo"
         <a href='/'>gunakan aplikasi</a>
     ";
