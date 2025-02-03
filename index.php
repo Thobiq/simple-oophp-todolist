@@ -24,6 +24,9 @@ switch ($relativePath) {
     case '/install':
         require "config/install.php";
         break;
+    case '/logo':
+        require "assets/image/logo_web_tbq.png";
+        break;
     default:
         http_response_code(404);
         echo "404 - Page Not Found";
