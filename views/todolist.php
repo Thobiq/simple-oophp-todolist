@@ -1,8 +1,9 @@
 <?php
 session_start();
-require '../Classes/Database.php';
-require '../Classes/User.php';
-require '../Classes/Todolist.php';
+
+require __DIR__.'/../Classes/Database.php';
+require __DIR__.'/../Classes/User.php';
+require __DIR__.'/../Classes/Todolist.php';
 
 $db  = new Database();
 $conn = $db->getConnection();
@@ -10,8 +11,31 @@ $conn = $db->getConnection();
 $user = new User($conn);
 $todolist = new Todolist($conn);
 
-// var_dump($dataUser);
+if (isset($_POST['btn-delete'])){
+    if ($user->delete()){
+        $_SESSION['usr'] = false;
+        session_destroy();
+    }
+    echo"<script>
+        alert(akun berhasil dihapus!);
+        window.location.href = '/register';
+        </script>";
+}
 
+if (isset($_POST['btn-logout'])){
+    $_SESSION['usr'] = false;
+    session_destroy();
+    echo "<script>
+        window.location.href = '/login';
+        </script>";
+}
+
+if (!$_SESSION['usr']){
+    echo "<script>
+        alert('Silahkan Login');
+        window.location.href = '/login';
+        </script>";
+}
 
 if (isset($_POST['add'])){
     if ($todolist->createList($_POST['list'])){
@@ -27,16 +51,6 @@ if (isset($_POST['save-edit'])){
 
 $dataUser = $user->getById($_SESSION['usr']['id_user']);
 
-
-if (isset($_POST['btn-delete'])){
-    if ($user->delete()){
-        echo"<script>
-                window.location.href = 'http://localhost/oophp-todolist/views/register.php';
-        </script>
-        ";
-    }
-}
-
 if (isset($_POST['btn-delete-list'])){
     $todolist->delById($_POST['btn-delete-list']);
 }
@@ -45,22 +59,25 @@ if (isset($_POST['btn-finish'])){
     $todolist->finish($_POST['btn-finish']);
 }
 
+if (isset($_POST['btn-unfinished'])){
+    $todolist->unfinished($_POST['btn-unfinished']);
+}
+
 if (isset($_POST['btn-edit-list'])){
     $_POST['id-list'] = $_POST['btn-edit-list'];
 }
-
 
 if ($todolist->getByUsrId()){
     $lists = $todolist->getByUsrId();
 }else{
     $lists = false;
 }
-
+              
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head>  
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todolist</title>
@@ -77,8 +94,11 @@ if ($todolist->getByUsrId()){
                 <form action="" method="post">
                     <button class="btn btn-warning text-white mx-1" name="btn-delete">Delete</button>
                 </form>
-            
-                <button class="btn btn-danger">Logout</button>
+
+                <form action="" method="post">
+                    <button class="btn btn-danger" name="btn-logout">Logout</button>
+                </form>
+
             </div>
         </div>
 
@@ -104,18 +124,9 @@ if ($todolist->getByUsrId()){
                     <div class="card mb-2">
                         <div class="card-body d-flex align-items-center justify-content-between py-1">
                             <p class="fs-5"><?=$list['list'];?></p>
-
                             <div class="d-flex">
-                                
-                                
-                                
                                 <form action="" method="post">
-                                    <a href="?list=" class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#editModalList">
-                                        <button class="btn btn-primary mx-1" value="<?=$list['id_list'];?>" data-bs-toggle="modal" data-bs-target="#editModalList" name="btn-edit-list" type="submit">Edit</button>
-                                    </a>
-                                    
                                     <button class="btn btn-danger" value="<?=$list['id_list'];?>" name="btn-delete-list">Delete</button>
-    
                                     <button class="btn btn-success" value="<?=$list['id_list'];?>" name="btn-finish">finished</button>
                                 </form>
                             </div>
@@ -131,8 +142,7 @@ if ($todolist->getByUsrId()){
                             <p class="fs-5"><?=$list['list'];?></p>
                             <form action="" method="post">
                                 <button class="btn btn-danger" value="<?=$list['id_list'];?>" name="btn-delete-list">Delete</button>
-
-                                <button class="btn btn-warning" value="<?=$list['id_list'];?>" name="btn-finish">Unfinished</button>
+                                <button class="btn btn-warning" value="<?=$list['id_list'];?>" name="btn-unfinished">Unfinished</button>
                             </form>
                         </div>
                     </div>
@@ -141,7 +151,6 @@ if ($todolist->getByUsrId()){
         <?php else: ?>
             <h4>Tidak ada tugas, happy holiday!</h4>
         <?php endif;?>
-        
         <!-- finish todolist -->
 
         <!-- Modal Edit User -->

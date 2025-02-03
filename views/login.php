@@ -1,6 +1,6 @@
 <?php
-require '../Classes/Database.php';
-require '../Classes/User.php';
+require __DIR__.'/../Classes/Database.php';
+require __DIR__.'/../Classes/User.php';
 
 $db = new Database();
 $conn = $db->getConnection();
@@ -11,16 +11,15 @@ if (isset($_POST['submit'])){
     if($login){
         session_start();
         $_SESSION['usr'] = $login;
-        // var_dump($_SESSION['usr']);
-        // var_dump($_SESSION['usr']['id_user']);
         echo "<script>
-        alert('Login successfully!');
-        window.location.href = 'http://localhost/oophp-todolist/views/todolist.php';
+        alert('Login Berhasil!');
+        window.location.href = '/';
         </script>";
+        // header("Location : /");
         exit;
     }else{
         echo "<script>
-        alert('Incorrect Password or Username');
+        alert('Kesalahan Password atau Username');
         </script>";
     }
 }
@@ -38,7 +37,6 @@ if (isset($_POST['submit'])){
 <body>
     <div class="container-fluid bg-primary d-flex align-items-center" style="height: 100vh;">
         <div class="card mx-auto" style="width: 20rem;">
-            
             <div class="card-body">
                 <div>
                     <h2 class="text-center">Login</h2>
@@ -56,6 +54,8 @@ if (isset($_POST['submit'])){
                     <div class="d-grid">
                         <button type="submit" name="submit" class="btn btn-primary">Login</button>
                     </div>
+                    <br>
+                    <a href="/register">Belum punya akun ?</a>
                 </form>
             </div>
         </div>

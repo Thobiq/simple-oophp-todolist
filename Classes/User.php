@@ -26,6 +26,7 @@ Class User{
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         return $user ?: null;
     }
+
     public function getById(int $ID) {
         $sql = "SELECT * FROM t_users WHERE id_user = :ID";
         $stmt = $this->conn->prepare($sql);
@@ -51,9 +52,9 @@ Class User{
         if ($delTodo->delete()){
             $sql = "DELETE FROM t_users WHERE id_user = :id_user";
             $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':id_user', $_SESSION['usr'][0]['id_user']);
-            return $stmt->execute();
+            $stmt->bindParam(':id_user', $_SESSION['usr']['id_user']);
         }
+        return $stmt->execute();
     }
 
 

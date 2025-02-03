@@ -1,7 +1,7 @@
 <?php
 
-require '../Classes/User.php';
-require '../Classes/Database.php';
+require __DIR__.'/../Classes/User.php';
+require __DIR__.'/../Classes/Database.php';
 
 $db = new Database();
 $conn = $db->getConnection();
@@ -11,8 +11,8 @@ $user = new User($conn);
 if (isset($_POST['submit'])){
     if ($user->creatUser($_POST['username'], $_POST['passwd'])){
         echo "<script>
-        alert('User Created successfully!');
-        window.location.href = 'http://localhost/oophp-todolist/views/login.php';
+        alert('Akun berhasil dibuat, silahkan Login!');
+        window.location.href = '/login';
         </script>";
     }
 }
@@ -49,6 +49,8 @@ if (isset($_POST['submit'])){
                     <div class="d-grid">
                         <button type="submit" name="submit" class="btn btn-primary">Register</button>
                     </div>
+                    <br>
+                    <a href="/login">Sudah punya akun ?</a>
                 </form>
             </div>
         </div>

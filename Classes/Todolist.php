@@ -52,5 +52,13 @@ class Todolist{
         return $stmt->execute();
     }
 
+    public function unfinished(int $id_list){
+        $sql = "UPDATE t_list SET status_id = :status_id WHERE id_list = :id_list";
+        $stmt = $this->conn->prepare($sql);
+        $status_id = 2;
+        $stmt->bindParam(':status_id', $status_id);
+        $stmt->bindParam(':id_list', $id_list);
 
+        return $stmt->execute();
+    }
 }
