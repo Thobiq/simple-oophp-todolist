@@ -1,10 +1,12 @@
 <?php
 
+require __DIR__.'/../config/config.php';
+
 class Database{
-    private $host = 'localhost',
-    $dbName = 'oophp-todolist',
-    $username = 'root',
-    $password = '';
+    private $host = DB_HOST,
+    $dbName = DB_NAME,
+    $username = DB_USER,
+    $password = DB_PASS;
     private PDO $conn;
 
     public function __construct()

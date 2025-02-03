@@ -21,6 +21,9 @@ switch ($relativePath) {
     case '/register':
         require "views/register.php";
         break;
+    case '/install':
+        require "config/install.php";
+        break;
     default:
         http_response_code(404);
         echo "404 - Page Not Found";
